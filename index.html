@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteo PwC 2025</title>
+    <link rel="stylesheet" href="inicio.css">
+</head>
+<body>
+
+<header class="top-bar">
+    <h1>Sorteo PwC 2025</h1>
+</header>
+
+<main>
+    <div class="card">
+        <h2>¡Bienvenidos al Gran Sorteo de PwC!</h2>
+
+        <p>
+            Nos alegra tenerlos aquí. Hoy participarán 
+            <strong>200 colaboradores</strong> en un sorteo completamente aleatorio, 
+            donde solo habrá <strong>36 ganadores</strong>.
+        </p>
+
+        <p>
+            El proceso es 100% transparente y automatizado. Cada ganador será 
+            seleccionado en tiempo real y sin repeticiones.
+        </p>
+
+        <p>
+            🎁<strong>Maravillosos premios</strong>🎁 están esperando a nuestros afortunados ganadores.  
+            ¡Prepárate para disfrutar esta experiencia llena de emoción y diversión al estilo PwC!
+        </p>
+
+        <button id="startBtn">Empecemos</button>
+    </div>
+</main>
+
+<script>
+    document.getElementById("startBtn").addEventListener("click", () => {
+        document.body.classList.add("fade-out");
+        setTimeout(() => {
+            window.location.href = "sorteo.html";
+        }, 500);
+    });
+</script>
+
+</body>
+</html>

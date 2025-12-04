@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteo PwC</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Activar animación global al cargar -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.body.classList.add("loaded");
+        });
+    </script>
+</head>
+<body>
+
+    <header>
+        <h1>Sorteo PwC</h1>
+    </header>
+
+    <main>
+        <div class="container">
+
+            <div class="left-panel">
+                <div class="button-group">
+                    <button id="generateBtn">Seleccionar Ganador</button>
+                    <button id="clearBtn" class="clear">Limpiar Lista</button>
+                </div>
+
+                <p id="remaining" class="remaining-count">Ganadores posibles restantes: 36</p>
+                <p id="status" class="status"></p>
+            </div>
+
+            <div class="right-panel">
+                <h2>Ganadores</h2>
+                <ul id="winnersList"></ul>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Librería de confeti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        const names = [
+            "Andrés", "Verónica", "Mateo", "Sofía", "Juan", "Camila", "Miguel", "Laura",
+            "Daniel", "Sara", "Carlos", "Valentina", "Felipe", "Paula", "Diego", "Mariana",
+            "Luis", "Isabella", "Fernando", "Gabriela", "Jorge", "Daniela", "Sebastián",
+            "Natalia", "Ricardo", "Juliana", "Óscar", "Luisa", "Cristian", "Manuela",
+            "Pedro", "Lizeth", "Tomás", "Ana", "Esteban", "Carolina"
+        ];
+
+        let winners = [];
+
+        const generateBtn = document.getElementById("generateBtn");
+        const clearBtn = document.getElementById("clearBtn");
+        const winnersList = document.getElementById("winnersList");
+        const status = document.getElementById("status");
+        const remaining = document.getElementById("remaining");
+
+        function updateRemaining() {
+            remaining.textContent = "Ganadores posibles restantes: " + (36 - winners.length);
+        }
+
+        function fireworks() {
+            const duration = 1200;
+            const animationEnd = Date.now() + duration;
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+
+                confetti({ particleCount: 50, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 50, angle: 120, spread: 55, origin: { x: 1 } });
+                confetti({ particleCount: 40, spread: 70, startVelocity: 60, origin: { x: 0.5, y: 0.3 } });
+            }, 200);
+        }
+
+        generateBtn.addEventListener("click", () => {
+            if (winners.length >= 36) {
+                status.textContent = "Ya no hay más ganadores disponibles.";
+                return;
+            }
+
+            status.textContent = "Pensando...";
+            status.classList.add("thinking");
+
+            let time = Math.floor(Math.random() * (10000 - 5000 + 1)) + 5000;
+
+            setTimeout(() => {
+                status.classList.remove("thinking");
+
+                let available = names.filter(n => !winners.includes(n));
+                let selected = available[Math.floor(Math.random() * available.length)];
+
+                winners.push(selected);
+                updateRemaining();
+
+                status.textContent = "Seleccionado: " + selected;
+
+                // Crear elemento ganador
+                let li = document.createElement("li");
+                li.textContent = selected;
+
+                // Quitar "latest" del ganador anterior
+                let previousLatest = winnersList.querySelector(".latest");
+                if (previousLatest) previousLatest.classList.remove("latest");
+
+                // Agregar la clase al nuevo ganador
+                li.classList.add("latest");
+
+                winnersList.appendChild(li);
+                winnersList.scrollTop = winnersList.scrollHeight;
+
+                confetti({
+                    particleCount: 300,
+                    spread: 180,
+                    ticks: 200,
+                    startVelocity: 55,
+                    origin: { x: 0.5, y: 0 }
+                });
+
+                fireworks();
+
+            }, time);
+        });
+
+        clearBtn.addEventListener("click", () => {
+            winners = [];
+            winnersList.innerHTML = "";
+            updateRemaining();
+            status.textContent = "";
+        });
+
+    </script>
+
+</body>
+</html>
